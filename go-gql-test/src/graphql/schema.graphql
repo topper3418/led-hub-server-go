@@ -1,0 +1,84 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  # Fetch all devices
+  devices: [Device!]!
+  
+  # Fetch a single device by ID
+  device(id: Int!): Device
+
+  # Get the current state of an LED strip by its IP
+  ledStripState(ip: String!): LedStripState
+}
+
+type Mutation {
+  # Create a new device
+  createDevice(
+    mac: String!
+    name: String
+    type: DeviceType!
+    current_ip: String
+  ): Device
+
+  # Update an existing device
+  updateDevice(
+    id: Int!
+    mac: String
+    name: String
+    type: DeviceType
+    current_ip: String
+    removed: Boolean
+  ): Device
+
+  # Delete a device by ID (returns true if successful)
+  deleteDevice(id: Int!): Boolean
+
+  # Set the state of an LED strip by its IP
+  setLedStripState(
+    ip: String!
+    input: LedStripStateInput!
+  ): Boolean
+}
+
+enum DeviceType {
+  LedStrip
+  Switch
+  Blinds
+}
+
+type Device {
+  id: Int!
+  mac: String!
+  name: String
+  type: DeviceType!
+  current_ip: String
+  removed: Boolean!
+}
+
+type LedStripState {
+  brightness: Int
+  on: Boolean!
+  color: Color
+}
+
+input LedStripStateInput {
+  brightness: Int
+  on: Boolean!
+  color: ColorInput
+}
+
+type Color {
+  r: Int!
+  g: Int!
+  b: Int!
+}
+
+input ColorInput {
+  r: Int!
+  g: Int!
+  b: Int!
+}
+
