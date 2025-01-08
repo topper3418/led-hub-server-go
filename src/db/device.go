@@ -2,7 +2,6 @@ package device
 
 import (
     "database/sql"
-
     "your-project/src/db"
 )
 
